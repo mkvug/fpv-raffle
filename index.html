@@ -35,7 +35,9 @@
             raffle.html('');
             raffle.append('<div id="playArea" />');
 
-            $('#playArea').append('<div id="drone"><model-viewer id="reveal" loading="eager" onclick="pickWinner()" camera-orbit="0deg 0deg" poster="/img/poster-shishkebab.png" src="/img/shishkebab.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
+            // Update to Player1 model
+            // May nee to update camera as well
+            $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" camera-orbit="0deg 5deg" src="/img/RobotExpressive.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
 
             for (let i = 0; i < entries.length; i++) {
                 let top = randomInt(90);
@@ -55,6 +57,12 @@
         }
 
         function pickWinner() {
+
+            const modelViewer = document.querySelector('#reveal');
+
+            // Update to props spinning animation
+            modelViewer.animationName = 'Running';
+            modelViewer.play();
             
             $('.ticket[data-entry="ticket-'+randomInt(entries.length)+'"]').addClass('winner');
             
@@ -81,6 +89,7 @@
                     marginLeft: width/2*-1
                 });
                 $('.lets-play').html('<button onclick="resetRaffle()">Reset</button>');
+                modelViewer.pause();
             }, 5000);
             // alert("You're a winner!");
         }
