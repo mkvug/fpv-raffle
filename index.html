@@ -5,48 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FPV Raffle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .ticket {
-            opacity: 1;
-        }
-        .out {
-            opacity: 0;
-        }
-        .congrats {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 1000;
-            zoom: 2;
-        }
-        #playArea {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            height: 500px;
-            margin: 0 auto;
-        }
-        #drone {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            background: rgba(255, 0, 0, .3);
-        }
-        #drone.stop {
-            background: rgba(255, 0, 0, .1);
-        }
-    </style>
     <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
+    <h1>FPV Raffle</h1>
     <div id="raffle">
-        <p>Enter names separated by newlines:</p>
+        <p class="intro">Enter names separated by newlines:</p>
         <textarea name="names" id="names" cols="30" rows="10"></textarea>
         <button onclick="process();">Import</button>
     </div>
@@ -63,11 +35,17 @@
             raffle.html('');
             raffle.append('<div id="playArea" />');
 
+            $('#playArea').append('<div id="drone"><model-viewer id="reveal" loading="eager" onclick="pickWinner()" camera-orbit="0deg 0deg" poster="/img/poster-shishkebab.png" src="/img/shishkebab.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
+
             for (let i = 0; i < entries.length; i++) {
-                $('#playArea').append('<div class="ticket" data-entry="ticket-'+i+'">'+entries[i]+'</div>');
+                let top = randomInt(90);
+                let left = randomInt(90);
+                let rotation = randomInt(360);
+                let z = randomInt(100);
+                $('#playArea').append('<div class="ticket" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';">'+entries[i]+'</div>');
             }
 
-            raffle.append('<div class="lets-play"><button onclick="pickWinner()">Let\'s Go!</button></div>');
+            raffle.append('<div class="lets-play text-center"><button onclick="pickWinner()">Let\'s Go!</button></div>');
         }
 
         function getNames() {
@@ -78,29 +56,49 @@
 
         function pickWinner() {
             
-            $('#playArea').append('<div id="drone"/>');
             $('.ticket[data-entry="ticket-'+randomInt(entries.length)+'"]').addClass('winner');
             
-            $('#drone').delay(5000).addClass('stop');
-
+            
             $('.ticket').not('.winner').each(function() {
-                $(this).delay(randomInt(5000)).animate({
-                    opacity: 0
+                let rotation = randomInt(360);
+                $(this).delay(randomInt(5000)).queue(function(next){
+                    $(this).css({
+                        opacity: 0,
+                        left: randomInt(100, -100)*5 + '%',
+                        top: randomInt(100, -100)*5 + '%',
+                        transform: 'rotateX('+randomInt(360)+'deg), rotateY('+randomInt(360)+'deg), rotateZ('+randomInt(360)+'deg)',
+                    });
+                    next();
                 });
             });
-
+            
             window.setTimeout(function(){
-                $('.ticket.winner').addClass('congrats');
+                $('#drone').delay(5000).addClass('stop');
+                let height = $('.ticket.winner').height();
+                let width = $('.ticket.winner').width();
+                $('.ticket.winner').addClass('congrats').css({
+                    marginTop: height/2*-1,
+                    marginLeft: width/2*-1
+                });
+                $('.lets-play').html('<button onclick="resetRaffle()">Reset</button>');
             }, 5000);
             // alert("You're a winner!");
         }
 
-        function randomInt(max) {
-            return Math.floor(Math.random() * max);
+        function randomInt(max, min=0) {
+            if (min != 0) {
+                return Math.floor(Math.random() * (max - min) + min);
+            } else {
+                return Math.floor(Math.random() * max);
+            }
         }
 
         function resetEntries() {
             entries = '';
+        }
+
+        function resetRaffle() {
+            location.reload();
         }
     </script>
 </body>
