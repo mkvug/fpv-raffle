@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPV Raffle</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .ticket {
+            opacity: 1;
+        }
+        .out {
+            opacity: 0;
+        }
+        .congrats {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1000;
+            zoom: 2;
+        }
+        #playArea {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        #drone {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            background: rgba(255, 0, 0, .3);
+        }
+        #drone.stop {
+            background: rgba(255, 0, 0, .1);
+        }
+    </style>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="raffle">
+        <p>Enter names separated by newlines:</p>
+        <textarea name="names" id="names" cols="30" rows="10"></textarea>
+        <button onclick="process();">Import</button>
+    </div>
+    <script>
+        console.log("Let's go! #TeamLevelUP");
+        
+        var entries;
+        var raffle = $('#raffle');
+
+        function process() {
+
+            entries = getNames();
+            
+            raffle.html('');
+            raffle.append('<div id="playArea" />');
+
+            for (let i = 0; i < entries.length; i++) {
+                $('#playArea').append('<div class="ticket" data-entry="ticket-'+i+'">'+entries[i]+'</div>');
+            }
+
+            raffle.append('<div class="lets-play"><button onclick="pickWinner()">Let\'s Go!</button></div>');
+        }
+
+        function getNames() {
+            return $('#names').val().split('\n').filter(function(name) {
+                return name.trim();
+            });
+        }
+
+        function pickWinner() {
+            
+            $('#playArea').append('<div id="drone"/>');
+            $('.ticket[data-entry="ticket-'+randomInt(entries.length)+'"]').addClass('winner');
+            
+            $('#drone').delay(5000).addClass('stop');
+
+            $('.ticket').not('.winner').each(function() {
+                $(this).delay(randomInt(5000)).animate({
+                    opacity: 0
+                });
+            });
+
+            window.setTimeout(function(){
+                $('.ticket.winner').addClass('congrats');
+            }, 5000);
+            // alert("You're a winner!");
+        }
+
+        function randomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function resetEntries() {
+            entries = '';
+        }
+    </script>
+</body>
+</html>
