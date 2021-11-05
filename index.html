@@ -44,10 +44,10 @@
                 let left = randomInt(90);
                 let rotation = randomInt(360);
                 let z = randomInt(100);
-                $('#playArea').append('<div class="ticket" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';">'+entries[i]+'</div>');
+                $('#playArea').append('<div class="ticket torn_container torn_left torn_right" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';"><div></div><div><span class="banner_text">'+entries[i]+'</span></div></div>');
             }
 
-            raffle.append('<div class="lets-play text-center"><button onclick="pickWinner()">Let\'s Go!</button></div>');
+            // raffle.append('<div class="lets-play text-center"><button onclick="pickWinner()">Let\'s Go!</button></div>');
         }
 
         function getNames() {
