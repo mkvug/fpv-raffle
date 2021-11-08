@@ -47,6 +47,10 @@ table {
 	border-spacing: 0;
 }
 
+html {
+    overflow: hidden;
+}
+
 body {
     font: 16px/1.4 $heading;
     background-color: $white;
@@ -88,6 +92,15 @@ button {
 
 .intro {
     font-size: 1.5rem;
+}
+
+#ticket-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    &.disable-animation {
+        z-index: 1500;
+    }
 }
 
 .ticket {

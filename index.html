@@ -34,17 +34,18 @@
             
             raffle.html('');
             raffle.append('<div id="playArea" />');
-
+            
             // Update to Player1 model
-            // May nee to update camera as well
-            $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" camera-orbit="0deg 5deg" src="/img/RobotExpressive.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
+            // May need to update camera as well
+            $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" min-field-of-view="35deg" max-field-of-view="35deg" camera-orbit="0deg 5deg" src="/img/Player1.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
+            $('#playArea').append('<div id="ticket-area"/>');
 
             for (let i = 0; i < entries.length; i++) {
                 let top = randomInt(90);
                 let left = randomInt(90);
                 let rotation = randomInt(360);
                 let z = randomInt(100);
-                $('#playArea').append('<div class="ticket torn_container torn_left torn_right" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';"><div></div><div><span class="banner_text">'+entries[i]+'</span></div></div>');
+                $('#ticket-area').append('<div class="ticket torn_container torn_left torn_right" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';"><div></div><div><span class="banner_text">'+entries[i]+'</span></div></div>');
             }
 
             // raffle.append('<div class="lets-play text-center"><button onclick="pickWinner()">Let\'s Go!</button></div>');
@@ -88,7 +89,7 @@
                     marginTop: height/2*-1,
                     marginLeft: width/2*-1
                 });
-                $('.lets-play').html('<button onclick="resetRaffle()">Reset</button>');
+                $('#ticket-area').addClass('disable-animation');
                 modelViewer.pause();
             }, 5000);
             // alert("You're a winner!");
