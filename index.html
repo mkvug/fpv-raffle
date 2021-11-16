@@ -18,27 +18,50 @@
 <body>
     <h1>FPV Raffle</h1>
     <div id="raffle">
-        <p class="intro">Enter names separated by newlines:</p>
-        <textarea name="names" id="names" cols="30" rows="10"></textarea>
-        <button onclick="process();">Import</button>
+        <div id="contestents">
+            <p class="intro">Enter names separated by newlines:</p>
+            <textarea name="names" id="names" cols="30" rows="10"></textarea>
+            <button onclick="process();">Import</button>
+        </div>
+        <div id="playArea" class="hide">
+            <div id="drone">
+                <model-viewer
+                    id="reveal"
+                    onclick="pickWinner()"
+                    min-field-of-view="35deg"
+                    max-field-of-view="35deg"
+                    camera-orbit="0deg 5deg"
+                    src="/img/Player1.glb"
+                    shadow-intensity="1"
+                    shadow-softness=".15"
+                    alt="A 3D model of a shishkebab">
+                    <div id="button-load" slot="poster">Loading 3D Model...<br/>Once loaded, click to play.</div>
+                </model-viewer>
+            </div>
+            <div id="ticket-area"></div>
+        </div>
     </div>
     <script>
         console.log("Let's go! #TeamLevelUP");
         
         var entries;
-        var raffle = $('#raffle');
+        var contestents = $('#contestents');
+        var playArea = $('#playArea');
+        var length = randomInt(10, 20); // Number of seconds the contest should take
 
         function process() {
 
             entries = getNames();
             
-            raffle.html('');
-            raffle.append('<div id="playArea" />');
+            // raffle.html('');
+            // raffle.append('<div id="playArea" />');
+            contestents.toggleClass('hide');
+            playArea.toggleClass('hide');
             
             // Update to Player1 model
             // May need to update camera as well
-            $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" min-field-of-view="35deg" max-field-of-view="35deg" camera-orbit="0deg 5deg" src="/img/Player1.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
-            $('#playArea').append('<div id="ticket-area"/>');
+            // $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" min-field-of-view="35deg" max-field-of-view="35deg" camera-orbit="0deg 5deg" src="/img/Player1.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
+            // $('#playArea').append('<div id="ticket-area"/>');
 
             for (let i = 0; i < entries.length; i++) {
                 let top = randomInt(90);
@@ -70,7 +93,7 @@
             
             $('.ticket').not('.winner').each(function() {
                 let rotation = randomInt(360);
-                $(this).delay(randomInt(5000)).queue(function(next){
+                $(this).delay(randomInt(length*1000)).queue(function(next){
                     $(this).css({
                         opacity: 0,
                         left: randomInt(100, -100)*5 + '%',
@@ -82,17 +105,13 @@
             });
             
             window.setTimeout(function(){
-                $('#drone').delay(5000).addClass('stop');
+                $('#drone').delay(length*1000).addClass('stop');
                 let height = $('.ticket.winner').height();
                 let width = $('.ticket.winner').width();
-                $('.ticket.winner').addClass('congrats').css({
-                    marginTop: height/2*-1,
-                    marginLeft: width/2*-1
-                });
+                $('.ticket.winner').addClass('congrats');
                 $('#ticket-area').addClass('disable-animation');
                 modelViewer.pause();
-            }, 5000);
-            // alert("You're a winner!");
+            }, length*1000);
         }
 
         function randomInt(max, min=0) {
