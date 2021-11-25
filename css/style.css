@@ -237,7 +237,7 @@ button:hover {
 #names {
   border: 0;
   width: 100%;
-  min-height: 650px;
+  min-height: calc(100vh - 125px);
 }
 
 model-viewer#reveal {
