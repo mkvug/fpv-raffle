@@ -52,8 +52,8 @@
         var entries;
         var contestents = $('#contestents');
         var playArea = $('#playArea');
-        // var length = randomInt(10, 20); // Number of seconds the contest should take
-        var length = randomInt(1, 2); // Number of seconds the contest should take
+        var length = randomInt(10, 20); // Number of seconds the contest should take
+        
         const modelViewer = document.querySelector('#reveal');
 
         function process(names=null) {
@@ -77,7 +77,6 @@
                 $('#ticket-area').append('<div class="ticket torn_container torn_left torn_right" data-entry="ticket-'+i+'" style="top: '+top+'%; left: '+left+'%; transform:rotate('+rotation+'deg); z-index:'+z+';"><div></div><div><span class="banner_text">'+entries[i]+'</span></div></div>');
             }
 
-            // raffle.append('<div class="lets-play text-center"><button onclick="pickWinner()">Let\'s Go!</button></div>');
         }
 
         function getNames() {
@@ -87,8 +86,6 @@
         }
 
         function pickWinner() {
-
-            // const modelViewer = document.querySelector('#reveal');
 
             // Update to props spinning animation
             modelViewer.animationName = 'Running';
@@ -139,7 +136,6 @@
                 return value != winner;
             });
             process(newEntries);
-            // entries = '';
         }
 
         function resetRaffle() {
