@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FPV Raffle</title>
+    <link rel="shortcut icon" href="/img/pokeyfpv.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -40,28 +41,33 @@
             </div>
             <div id="ticket-area"></div>
         </div>
+        <footer><a href="https://www.youtube.com/pokeyfpv"><img src="/img/pokeyfpv.png" alt="PokeyFPV"></a> <span class="copyright"></span></footer>
     </div>
     <script>
         console.log("Let's go! #TeamLevelUP");
+
+        var year = new Date().getFullYear();
+        $('.copyright').html('© ' + year);
         
         var entries;
         var contestents = $('#contestents');
         var playArea = $('#playArea');
-        var length = randomInt(10, 20); // Number of seconds the contest should take
+        // var length = randomInt(10, 20); // Number of seconds the contest should take
+        var length = randomInt(1, 2); // Number of seconds the contest should take
+        const modelViewer = document.querySelector('#reveal');
 
-        function process() {
+        function process(names=null) {
 
-            entries = getNames();
-            
-            // raffle.html('');
-            // raffle.append('<div id="playArea" />');
-            contestents.toggleClass('hide');
-            playArea.toggleClass('hide');
-            
-            // Update to Player1 model
-            // May need to update camera as well
-            // $('#playArea').append('<div id="drone"><model-viewer id="reveal" onclick="pickWinner()" min-field-of-view="35deg" max-field-of-view="35deg" camera-orbit="0deg 5deg" src="/img/Player1.glb" alt="A 3D model of a shishkebab"></model-viewer></div>');
-            // $('#playArea').append('<div id="ticket-area"/>');
+            if (names!=null) {
+                entries = names;
+                $('.playAgain').remove();
+                $('#ticket-area').html('').removeClass('disable-animation');
+                modelViewer.animationName = 'Running';
+            } else {
+                entries = getNames();
+                contestents.toggleClass('hide');
+                playArea.toggleClass('hide');
+            }
 
             for (let i = 0; i < entries.length; i++) {
                 let top = randomInt(90);
@@ -82,7 +88,7 @@
 
         function pickWinner() {
 
-            const modelViewer = document.querySelector('#reveal');
+            // const modelViewer = document.querySelector('#reveal');
 
             // Update to props spinning animation
             modelViewer.animationName = 'Running';
@@ -110,6 +116,7 @@
                 let width = $('.ticket.winner').width();
                 $('.ticket.winner').addClass('congrats');
                 $('#ticket-area').addClass('disable-animation');
+                $('#playArea').append('<div class="playAgain text-center"><button onclick="playAgain()">Play Again</button> <button class="secondary" onclick="resetRaffle()">Reset</button></div>');
                 modelViewer.pause();
             }, length*1000);
         }
@@ -124,6 +131,15 @@
 
         function resetEntries() {
             entries = '';
+        }
+
+        function playAgain() {
+            let winner = $('.ticket.winner').text();
+            let newEntries = entries.filter(function(value, index, arr) {
+                return value != winner;
+            });
+            process(newEntries);
+            // entries = '';
         }
 
         function resetRaffle() {

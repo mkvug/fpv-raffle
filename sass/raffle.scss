@@ -84,6 +84,13 @@ button {
     &:hover {
         background-color: darken($blue, 10);
     }
+    &.secondary {
+        background: $white;
+        color: $black;
+        &:hover {
+            background-color: darken($white, 10);
+        }
+    }
 }
 
 .text-center {
@@ -222,8 +229,16 @@ button {
 
 #raffle {
     width: 100%;
-    height: 700px;
+    height: calc(100vh - 4rem - 22px);
     margin: 2rem auto;
+}
+
+.playAgain {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+    padding-bottom: 2rem;
 }
 
 #contestents {
@@ -234,7 +249,16 @@ button {
 #names {
     border: 0;
     width: 100%;
-    height: calc(100vh - 205px);
+    height: calc(100vh - 253px);
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+        height: 48px;
+    }
 }
 
 model-viewer#reveal {

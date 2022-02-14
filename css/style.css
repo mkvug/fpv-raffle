@@ -89,6 +89,13 @@ button {
 button:hover {
   background-color: #1c4ba1;
 }
+button.secondary {
+  background: #ebebeb;
+  color: black;
+}
+button.secondary:hover {
+  background-color: #d2d2d2;
+}
 
 .text-center {
   text-align: center;
@@ -231,8 +238,16 @@ button:hover {
 
 #raffle {
   width: 100%;
-  height: 700px;
+  height: calc(100vh - 4rem - 22px);
   margin: 2rem auto;
+}
+
+.playAgain {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  padding-bottom: 2rem;
 }
 
 #contestents {
@@ -243,7 +258,16 @@ button:hover {
 #names {
   border: 0;
   width: 100%;
-  height: calc(100vh - 205px);
+  height: calc(100vh - 253px);
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer img {
+  height: 48px;
 }
 
 model-viewer#reveal {
