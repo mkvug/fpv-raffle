@@ -8,7 +8,8 @@
     <link rel="shortcut icon" href="/img/pokeyfpv.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat&family=Press+Start+2P&family=Roboto&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/style.css">
     <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -19,10 +20,29 @@
 <body>
     <div id="raffle">
         <div id="contestents">
+            <header class="text-right">
+                <img class="icon" src="img/settings.svg" alt="Settings" onclick="settings();"/>
+            </header>
             <h1>FPV Raffle</h1>
             <p class="intro">Enter names separated by newlines:</p>
             <textarea name="names" id="names" cols="30" rows="10"></textarea>
             <button onclick="process();">Import</button>
+            <div id="settings">
+                <div class="text-right">
+                    <img class="icon" src="img/close.svg" alt="Close" onclick="closeSettings();">
+                </div>
+                <h2>Settings</h2>
+                <div id="settings-form">
+                    <div class="form-element">
+                        <label for="time-setting">Duration</label>
+                        <span class="input-help">
+                            <input type="text" placeholder="10, 20" id="time-setting" pattern="[1-9]anana|[Cc]herry">
+                            <small class="help-text form-text text-muted">The number of seconds the drawing will take. Enter two numbers, separated by a comma, for a random duration between the specified times.</small>
+                        </span>
+                    </div>
+                    <button id="submit">Submit</button>
+                </div>
+            </div>
         </div>
         <div id="playArea" class="hide">
             <div id="drone">
@@ -49,14 +69,36 @@
         var year = new Date().getFullYear();
         $('.copyright').html('© ' + year);
         
-        var entries;
+        var entries, length;
         var contestents = $('#contestents');
         var playArea = $('#playArea');
-        var length = randomInt(10, 20); // Number of seconds the contest should take
+        var time = '10, 20';
+
+        document.getElementById("submit").addEventListener("click", function(event){
+            event.preventDefault();
+            var validDuration = validateDuration($('#time-setting').val());
+
+            if (validDuration==true) {
+                $('#time-setting ~ .error-msg').remove();
+                time = $('#time-setting').val();
+                $('#settings').hide();
+            } else {
+                $('#time-setting').parent().append('<div class="error-msg">'+validDuration+'</div>');
+            }
+        });
         
         const modelViewer = document.querySelector('#reveal');
 
         function process(names=null) {
+
+            time = time.trim();
+            duration = time.split(',');
+
+            if (duration.length > 1) {
+                length = randomInt(parseInt(duration[0]), parseInt(duration[1])); // Number of seconds the contest should take
+            } else {
+                length = parseInt(duration[0]); // Number of seconds the contest should take
+            }
 
             if (names!=null) {
                 entries = names;
@@ -140,6 +182,24 @@
 
         function resetRaffle() {
             location.reload();
+        }
+
+        function settings() {
+            $('#contestents #settings').show();
+        }
+
+        function closeSettings() {
+            $('#contestents #settings').hide();
+        }
+
+        function validateDuration(str) {
+            var invalidChars = str.match(/[^0-9,\s]/g);
+
+            if(invalidChars == null) {
+                return true;
+            } else {
+                return 'Please specify the time in seconds.';
+            }
         }
     </script>
 </body>

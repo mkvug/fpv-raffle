@@ -57,7 +57,7 @@ html {
 }
 
 body {
-  font: 16px/1.4 "Bebas Neue", cursive;
+  font: 16px/1.4 "Roboto", sans-serif;
   background-color: #b3b3b3;
   color: black;
   /* Settings */
@@ -71,10 +71,39 @@ body {
   --torn-right-clip-path:polygon(68% 0%, 27% 3%, 5% 5%, 4% 8%, 71% 10%, 31% 13%, 64% 15%, 3% 18%, 58% 21%, 95% 23%, 97% 26%, 15% 28%, 40% 31%, 81% 33%, 69% 36%, 51% 38%, 99% 41%, 56% 44%, 46% 46%, 65% 49%, 19% 51%, 97% 54%, 64% 56%, 29% 59%, 34% 62%, 33% 64%, 79% 67%, 30% 69%, 13% 72%, 56% 74%, 52% 77%, 86% 79%, 57% 82%, 14% 85%, 41% 87%, 26% 90%, 35% 92%, 75% 95%, 53% 97%, 30% 100%, -10% 100%, -10% 0%);
 }
 
+h1, h2, h3, h4, h5, h6, p.intro, .copyright, label {
+  font-family: "Bebas Neue", cursive;
+}
+
 h1 {
   font-size: 2.5rem;
   text-align: center;
   margin: 1rem 0;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.help-text {
+  font-size: small;
+  display: block;
+  max-width: 300px;
+}
+
+.error, .error-msg {
+  color: red;
+}
+
+.input-help {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.icon {
+  width: 24px;
 }
 
 button {
@@ -96,9 +125,16 @@ button.secondary {
 button.secondary:hover {
   background-color: #d2d2d2;
 }
+button#submit {
+  margin-top: 1rem;
+}
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .hide {
@@ -253,6 +289,24 @@ button.secondary:hover {
 #contestents {
   max-width: 700px;
   margin: auto;
+  position: relative;
+  padding: 0 1rem;
+}
+#contestents header {
+  position: absolute;
+  right: 0;
+  padding: 0 1rem;
+}
+#contestents #settings {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  width: calc(100% - 60px);
+  height: 100%;
+  z-index: 1;
+  background: #ebebeb;
+  padding: 1rem;
 }
 
 #names {
