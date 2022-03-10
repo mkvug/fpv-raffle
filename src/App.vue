@@ -28,6 +28,8 @@ import PostRaffle from "./components/PostRaffle.vue";
 import TheDrone from "./components/TheDrone.vue";
 import TheFooter from "./components/TheFooter.vue";
 
+console.log("#teamLevelUp");
+
 export default {
   name: "App",
   components: {
