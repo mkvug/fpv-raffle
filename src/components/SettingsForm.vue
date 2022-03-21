@@ -18,6 +18,7 @@
         <option value="player1">Player 1</option>
         <option value="crush">MQTB Crush Light</option>
         <option value="sourceone">Source One</option>
+        <option value="sourceone-hdzero">Source One - HDZero</option>
       </select>
     </div>
     <div class="form-element">
