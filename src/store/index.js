@@ -57,7 +57,8 @@ export default createStore({
        * Convert string of contestants
        * to an array and add to state.contestants.
        */
-      state.contestants = contestants.split("\n");
+      var contestantArray = contestants.split("\n").filter((n) => n);
+      state.contestants = contestantArray;
     },
     emptyContestants(state) {
       /*******
